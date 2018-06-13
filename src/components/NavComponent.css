@@ -1,0 +1,32 @@
+/* navigation css */
+.topnav {
+  background-color: transparent;
+  color: #01010101;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+  padding-left: 5vw;
+  padding-right: 5vw;
+  position: fixed;
+  top: 0;
+  width: 90vw;
+  transition: background-color 1s ease;
+  transition: padding 0.5s ease;
+}
+
+.topnav a {
+  float: right;
+  padding: 3vh 2vh 3vh;
+  text-decoration: none;
+  color: #010101;
+  
+}
+
+.topnav.modify {
+  background-color: white;
+  color: #010101;
+  padding-top: 0;
+  padding-bottom: 0;
+  transition: background-color 1s ease;
+  transition: padding 0.5s ease;
+}
+

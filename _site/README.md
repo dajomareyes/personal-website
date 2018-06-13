@@ -1,1 +1,0 @@
-# DavidJoshuaReyes.github.io
