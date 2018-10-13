@@ -2,6 +2,10 @@ html, body {
   margin: 0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
 
+a {
+  text-decoration: none;
+  color: inherit; }
+
 div#greeting-container {
   position: absolute;
   width: 100%;
@@ -17,5 +21,10 @@ h1#greeting-text {
 p#greeting-description {
   margin: 0;
   font-size: 1.2em; }
+
+.social-icon {
+  font-size: 2rem;
+  padding-top: 7px;
+  width: 100%; }
 
 /*# sourceMappingURL=style.css.map */
