@@ -5,12 +5,12 @@ html, body {
 a {
   text-decoration: none;
   color: inherit;
-  height: 20px; }
+  height: 100px; }
 
 div#greeting-container {
   position: absolute;
   width: 100%;
-  height: 200px;
+  height: 500px;
   top: 50%;
   left: 25%;
   margin-top: -120px; }
@@ -25,16 +25,16 @@ p#greeting-description {
 
 .social-icon {
   font-size: 2rem;
-  padding-top: 7px;
-  width: 100%; }
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  padding-top: 10px; }
+  .social-icon:hover {
+    font-color: blue;
+    font-size: 5rem; }
 
 .social-link {
-  padding-left: 0;
-  -moz-transition: all 1.5s ease;
-  -o-transition: all 1.5s ease;
-  -webkit-transition: all 1.5s ease;
-  transition: all 1.5s ease; }
-  .social-link:hover {
-    padding-left: 300px; }
+  padding-right: 15px; }
 
 /*# sourceMappingURL=style.css.map */
