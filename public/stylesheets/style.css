@@ -4,7 +4,8 @@ html, body {
 
 a {
   text-decoration: none;
-  color: inherit; }
+  color: inherit;
+  height: 20px; }
 
 div#greeting-container {
   position: absolute;
@@ -26,5 +27,14 @@ p#greeting-description {
   font-size: 2rem;
   padding-top: 7px;
   width: 100%; }
+
+.social-link {
+  padding-left: 0;
+  -moz-transition: all 1.5s ease;
+  -o-transition: all 1.5s ease;
+  -webkit-transition: all 1.5s ease;
+  transition: all 1.5s ease; }
+  .social-link:hover {
+    padding-left: 300px; }
 
 /*# sourceMappingURL=style.css.map */

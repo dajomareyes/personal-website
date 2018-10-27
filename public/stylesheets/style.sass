@@ -1,3 +1,4 @@
+@import transition
 $global-font: 14px "Lucida Grande", Helvetica, Arial, sans-serif 
 
 html, body
@@ -7,6 +8,7 @@ html, body
 a
   text-decoration: none
   color: inherit
+  height: 20px
 
 // main greeting classes
 div#greeting-container
@@ -31,3 +33,12 @@ p#greeting-description
   font-size: 2rem
   padding-top: 7px
   width: 100%
+
+.social-link
+  $instagram-color: #c1558b
+  width: 50%
+  padding-left: 0
+  +transition(all 1.5s ease)
+
+  &:hover 
+    padding-left: 300px
