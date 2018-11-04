@@ -13,6 +13,7 @@ steps:
   dir: "apps/"
 
 - name: "gcr.io/cloud-builders/gcloud"
-  args: ["app", "deploy", "/apps/turns"]
+  args: ["app", "deploy"]
+  dir: "apps/turns"
 
 timeout: "1600s"
