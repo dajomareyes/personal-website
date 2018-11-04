@@ -1,6 +1,9 @@
 dispatch:
-  - url: "*/"
+  - url: "www.davidjoshuareyes.com/*"
     service: default
-
+  
+  - url: "davidjoshuareyes.com/*"
+    service: default
+  
   - url: "turns.davidjoshuareyes.com/*"
     service: turns
