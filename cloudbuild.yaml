@@ -5,4 +5,15 @@ steps:
 #   args: ['test']
 - name: "gcr.io/cloud-builders/gcloud"
   args: ["app", "deploy"]
+<<<<<<< Updated upstream
+=======
+
+- name: "gcr.io/cloud-builders/git"
+  args: ["clone", "--branch", "v1.0.0", "--single-branch", "--depth", "1", "https://github.com/dajomareyes/turns.git"]
+  dir: "apps/"
+
+- name: "gcr.io/cloud-builders/gcloud"
+  args: ["app", "deploy", "/apps/turns"]
+
+>>>>>>> Stashed changes
 timeout: "1600s"
