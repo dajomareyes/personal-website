@@ -1,7 +1,7 @@
 {
   "name": "personal-website",
   "version": "0.0.0",
-  "author" :  "David Joshua Reyes",
+  "author": "David Joshua Reyes",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
@@ -12,9 +12,11 @@
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
+    "mongoose": "^5.3.9",
     "morgan": "~1.9.0",
     "node-sass-middleware": "0.11.0",
-    "pug": "2.0.0-beta11"
+    "pug": "2.0.0-beta11",
+    "uikit": "^3.0.0-rc.20"
   },
   "devDependencies": {
     "nodemon": "^1.18.4"

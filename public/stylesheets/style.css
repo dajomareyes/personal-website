@@ -29,7 +29,7 @@ p#greeting-description {
   -o-transition: all 0.2s;
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
-  padding-top: 10px; }
+  padding-top: 8px; }
   .social-icon:hover {
     font-color: blue;
     font-size: 5rem; }
