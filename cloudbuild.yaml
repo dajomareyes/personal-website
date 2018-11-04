@@ -16,4 +16,7 @@ steps:
   args: ["app", "deploy"]
   dir: "apps/turns"
 
+- name: "gcr.io/cloud-builders/gcloud"
+  args: ["app", "deploy", "dispatch.yaml"]
+
 timeout: "1600s"
