@@ -1,3 +1,6 @@
 dispatch:
+  - url: "*/"
+    service: default
+
   - url: "turns.davidjoshuareyes.com/*"
     service: turns
