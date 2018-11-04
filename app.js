@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 if(!isProduction) {
   app.use(logger('common'));
 } else {
-  app.use()
+  app.use(logger('dev'));
 }
 
 // handle routes
