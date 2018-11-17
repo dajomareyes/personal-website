@@ -1,0 +1,51 @@
+// global variables go here
+$is-wide-screen: "screen and (min-width: 1024px)";
+$is-phone-screen: "screen and (min-width: 320px)";
+
+html, body {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  height: 20px;
+}
+
+// main greeting classes
+div#greeting-container {
+  position: absolute;
+  width: 100%;
+  top: 40%;
+}
+
+h1#greeting-text {
+  $greeting-width: 5;
+  
+  margin: 0;
+
+  @media #{$is-wide-screen} { font-size: #{$greeting-width}vw;}
+  @media #{$is-phone-screen} { font-size: #{$greeting-width*2}vw; }
+}
+
+p#greeting-description {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+// social media classes
+.social-icon {
+  font-size: 2rem;
+  padding-top: 7px;
+  width: 100%;
+}
+
+.social-link {
+  $instagram-color: #c1558b;
+  width: 50%;
+  padding-left: 0;
+
+  &:hover { 
+    padding-left: 300px;
+  }
+}
