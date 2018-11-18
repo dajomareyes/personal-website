@@ -4,7 +4,7 @@ html, body {
 a {
   text-decoration: none;
   color: inherit;
-  height: 20px; }
+  height: 100px; }
 
 div#greeting-container {
   position: absolute;
@@ -31,8 +31,14 @@ p#greeting-description {
 
 .social-icon {
   font-size: 2rem;
-  padding-top: 7px;
-  width: 100%; }
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+  padding-top: 8px; }
+  .social-icon:hover {
+    font-color: blue;
+    font-size: 5rem; }
 
 .social-link {
   width: 50%;
