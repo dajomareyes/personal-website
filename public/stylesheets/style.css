@@ -13,16 +13,21 @@ div#greeting-container {
 
 h1#greeting-text {
   margin: 0; }
-  @media screen and (min-width: 1024px) {
+  @media screen and (min-width: 600px) {
     h1#greeting-text {
-      font-size: 5vw; } }
-  @media screen and (min-width: 320px) {
+      font-size: 3vw; } }
+  @media screen and (max-width: 600px) {
     h1#greeting-text {
-      font-size: 10vw; } }
+      font-size: 12vw; } }
 
 p#greeting-description {
-  margin: 0;
-  font-size: 1.2em; }
+  margin: 0; }
+  @media screen and (min-width: 600px) {
+    p#greeting-description {
+      font-size: 1vw; } }
+  @media screen and (max-width: 600px) {
+    p#greeting-description {
+      font-size: 4vw; } }
 
 .social-icon {
   font-size: 2rem;

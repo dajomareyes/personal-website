@@ -1,6 +1,6 @@
 // global variables go here
-$is-wide-screen: "screen and (min-width: 1024px)";
-$is-phone-screen: "screen and (min-width: 320px)";
+$is-wide-screen: "screen and (min-width: 600px)";
+$is-phone-screen: "screen and (max-width: 600px)";
 
 html, body {
   margin: 0;
@@ -20,17 +20,17 @@ div#greeting-container {
 }
 
 h1#greeting-text {
-  $greeting-width: 5;
-  
+  $greeting-width: 3;
   margin: 0;
-
-  @media #{$is-wide-screen} { font-size: #{$greeting-width}vw;}
-  @media #{$is-phone-screen} { font-size: #{$greeting-width*2}vw; }
+  @media #{$is-wide-screen} { font-size: #{$greeting-width}vw; }
+  @media #{$is-phone-screen} { font-size: #{$greeting-width*4}vw; }
 }
 
 p#greeting-description {
+  $desc-width: 1;
   margin: 0;
-  font-size: 1.2em;
+  @media #{$is-wide-screen} { font-size: #{$desc-width}vw; }
+  @media #{$is-phone-screen} { font-size: #{$desc-width*4}vw; }
 }
 
 // social media classes
