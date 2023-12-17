@@ -1,75 +1,60 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Avatar, Chip, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import Grid from "@mui/system/Unstable_Grid";
-import background from "../assets/profile.jpg";
+import avatarImage from "../assets/avatar-david.jpeg";
 
-const Section = styled(Paper)(({ theme }) => ({
-  display: "block",
-  padding: theme.spacing(4),
-  borderRadius: 0,
+const StyledDiv = styled("div")(() => ({
+  display: "grid",
+  overflowX: "hidden",
+  overflowY: "hidden",
+  color: "black",
+  width: "100vw",
+  height: "90vh",
+  margin: 0,
+  padding: 0,
 }));
 
 const Home = () => {
   return (
-    <>
-      <Grid container columns={{ xs: 12 }}>
-        <Grid xs={12}>
-          <Section
-            elevation={0}
-            sx={{
-              backgroundImage: `url(${background})`,
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "cover",
-              boxShadow: "inset 0 0 0 2000px rgba(0, 0, 0, 0.45)",
-            }}
-          >
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              height="95vh"
-            >
-              <Typography variant="h3">
-                You don't have to grow through it alone.
-              </Typography>
-            </Box>
-          </Section>
+    <StyledDiv>
+      <Grid
+        container
+        justifyContent={"center"}
+        alignItems={"center"}
+        spacing={2}
+      >
+        <Grid>
+          <Avatar
+            alt="David Reyes"
+            src={avatarImage}
+            sx={{ width: 56, height: 56 }}
+          />
         </Grid>
-        {/* todo: implement this */}
-        {/* <Grid xs={12}>
-          <Section
-            elevation={0}
-            sx={{ 
-              height: "20vh", 
-              // backgroundColor: "#173F2F" 
-              backgroundColor: "#668476",
-              // backgroundColor: "#D16014"
-              // backgroundColor: "#362816"
-              // backgroundColor: "#FEFCF3"
-              boxShadow: "inset 0 0 0 2000px rgba(0, 0, 0, 0.25)",
-
-            }}
-            id="socials"
-          >
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Typography variant="h3">
-                Socials
-              </Typography>
-            </Box>
-          </Section>
-        </Grid> */}
-        {/* <Grid xs={12}>
-          <Section elevation={0} sx={{ height: "80vh" }} id="about">
-            <h1>About</h1>
-          </Section>
-        </Grid> */}
+        <Grid>
+          <Stack sx={{ mb: 1, mt: 3 }}>
+            <Typography variant="h5">Hi there! My name is David</Typography>
+            <Typography variant="subtitle1" lineHeight="1">
+              Software Engineer
+            </Typography>
+          </Stack>
+          <Stack direction="row" spacing={1}>
+            <Chip
+              label="Linkedin"
+              color="primary"
+              component="a"
+              href="https://www.linkedin.com/in/david-joshua-reyes-7aa50ab3/"
+              clickable
+            />
+            <Chip
+              label="Github"
+              component="a"
+              href="https://github.com/dajomareyes"
+              clickable
+            />
+          </Stack>
+        </Grid>
       </Grid>
-    </>
+    </StyledDiv>
   );
 };
 
