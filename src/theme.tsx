@@ -1,4 +1,4 @@
-import Jomolhari from "./assets/fonts/Jomolhari.ttf";
+// import Jomolhari from "./assets/fonts/Jomolhari.ttf";
 import { createTheme } from "@mui/material/styles";
 
 // reference for rgba colors
