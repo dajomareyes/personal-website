@@ -5,10 +5,12 @@ import App from "./App";
 import Home from "./pages/Home";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
+import TipCalculatorRoute from "./pages/TipCalculatorRoute";
 
 const router = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/home", element: <Home /> },
+  { path: "/tips", element: <TipCalculatorRoute /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
