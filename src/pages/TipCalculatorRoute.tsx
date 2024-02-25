@@ -31,7 +31,7 @@ const TipCalculatorRoute = () => {
 
   return (
     <Grid
-      mt={12}
+      mt={"4vh"}
       container
       justifyContent={"center"}
       alignItems={"center"}
