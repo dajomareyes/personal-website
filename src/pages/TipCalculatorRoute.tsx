@@ -11,10 +11,39 @@ import Grid from "@mui/system/Unstable_Grid";
 import { useMemo, useState } from "react";
 
 const percentages = [10, 12, 15, 18, 20, 22, 25];
+const numberOfPeople = [2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+type SummaryProps = {
+  tip: number;
+  total: number;
+  label: string;
+  splitBetween: number;
+};
+
+const Summary = (props: SummaryProps) => {
+  return (
+    <>
+      <Divider textAlign="right">
+        <Chip label={props.label} />
+      </Divider>
+      Tip: ${props.tip.toFixed(2)}
+      <br />
+      Total: ${props.total.toFixed(2)}
+      <br />
+      {props.splitBetween > 1 ? (
+        <>
+          Total per person: ${(props.total / +props.splitBetween).toFixed(2)}
+          <br />
+        </>
+      ) : null}
+    </>
+  );
+};
 
 const TipCalculatorRoute = () => {
   const [percentage, setPercentage] = useState("");
   const [subTotal, setSubTotal] = useState("");
+  const [splitBetween, setSplitBetween] = useState(0);
   const [total, setTotal] = useState("");
 
   const calculateTip = useMemo(() => {
@@ -38,10 +67,10 @@ const TipCalculatorRoute = () => {
       spacing={2}
       direction="column"
     >
-      <Grid xs={12} sm={4}>
+      <Grid xs={12} sm={6}>
         <Typography variant={"h3"}>Tip Calculator</Typography>
       </Grid>
-      <Grid xs={12} sm={4}>
+      <Grid xs={12} sm={6}>
         <TextField
           fullWidth
           label="Bill Sub-Total (USD)"
@@ -53,7 +82,7 @@ const TipCalculatorRoute = () => {
           }}
         />
       </Grid>
-      <Grid xs={12} sm={4}>
+      <Grid xs={12} sm={6}>
         <TextField
           fullWidth
           label="Bill Total (USD)"
@@ -65,7 +94,7 @@ const TipCalculatorRoute = () => {
           }}
         />
       </Grid>
-      <Grid xs={12} sm={4}>
+      <Grid xs={12} sm={6}>
         <FormControl fullWidth>
           <InputLabel id="percetange-drop-down-label">
             Tip Percentage
@@ -83,29 +112,45 @@ const TipCalculatorRoute = () => {
           </Select>
         </FormControl>
       </Grid>
-      <Grid xs={12} sm={4}>
+      <Grid xs={12} sm={6}>
+        <FormControl fullWidth>
+          <InputLabel id="percetange-drop-down-label">
+            Split Between (Optional)
+          </InputLabel>
+          <Select
+            value={splitBetween}
+            label="Split Between"
+            onChange={(event) => {
+              setSplitBetween(+event.target.value);
+            }}
+          >
+            <MenuItem value={1}>Do not split</MenuItem>
+            {numberOfPeople.map((people) => (
+              <MenuItem value={people}>{people}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid xs={12} sm={6}>
         <Typography variant={"body1"}>
-          <Divider textAlign="right">
-            <Chip label="RAW" />
-          </Divider>
-          Tip: ${calculateTip.rawTipAmount.toFixed(2)}
-          <br />
-          Total: ${calculateTip.rawtotalAmount.toFixed(2)}
-          <br />
-          <Divider textAlign="right">
-            <Chip label="ROUNDED DOWN" />
-          </Divider>
-          Tip: ${calculateTip.tipAmountRoundDown.toFixed(2)}
-          <br />
-          Total: ${calculateTip.totalRoundedDown.toFixed(2)}
-          <br />
-          <Divider textAlign="right">
-            <Chip label="ROUNDED UP" />
-          </Divider>
-          Tip: ${calculateTip.tipAmountRoundUp.toFixed(2)}
-          <br />
-          Total: ${calculateTip.totalRoundedUp.toFixed(2)}
-          <br />
+          <Summary
+            tip={calculateTip.rawTipAmount}
+            total={calculateTip.rawtotalAmount}
+            splitBetween={splitBetween}
+            label="RAW"
+          />
+          <Summary
+            tip={calculateTip.tipAmountRoundDown}
+            total={calculateTip.totalRoundedDown}
+            splitBetween={splitBetween}
+            label="ROUNDED DOWN"
+          />
+          <Summary
+            tip={calculateTip.tipAmountRoundUp}
+            total={calculateTip.totalRoundedUp}
+            splitBetween={splitBetween}
+            label="ROUNDED UP"
+          />
         </Typography>
       </Grid>
     </Grid>
