@@ -119,7 +119,7 @@ const TipCalculatorRoute = () => {
           </InputLabel>
           <Select
             value={splitBetween}
-            label="Split Between"
+            label="Split Between (Optional)"
             onChange={(event) => {
               setSplitBetween(+event.target.value);
             }}
