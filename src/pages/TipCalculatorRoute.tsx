@@ -1,3 +1,4 @@
+import Alert from "@mui/material/Alert";
 import Chip from "@mui/material/Chip";
 import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
@@ -71,6 +72,15 @@ const TipCalculatorRoute = () => {
         <Typography variant={"h3"}>Tip Calculator</Typography>
       </Grid>
       <Grid xs={12} sm={6}>
+        <Alert severity="info">
+          <Typography variant={"body1"}>
+            This tip caclulator generates the tip amount as a percentage of the
+            subtotal and adds it to the total. It also provides the option to
+            split the bill between a number of people.
+          </Typography>
+        </Alert>
+      </Grid>
+      <Grid xs={12} sm={6}>
         <TextField
           fullWidth
           label="Bill Sub-Total (USD)"
@@ -118,7 +128,7 @@ const TipCalculatorRoute = () => {
             Split Between (Optional)
           </InputLabel>
           <Select
-            value={splitBetween}
+            value={splitBetween > 1 ? splitBetween : undefined}
             label="Split Between (Optional)"
             onChange={(event) => {
               setSplitBetween(+event.target.value);
