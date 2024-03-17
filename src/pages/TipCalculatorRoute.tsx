@@ -1,5 +1,4 @@
-import Alert from "@mui/material/Alert";
-import Chip from "@mui/material/Chip";
+import { Alert, CardContent, Paper, Stack, styled } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -21,22 +20,38 @@ type SummaryProps = {
   splitBetween: number;
 };
 
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#eceff1",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
+
 const Summary = (props: SummaryProps) => {
   return (
     <>
-      <Divider textAlign="right">
-        <Chip label={props.label} />
-      </Divider>
-      Tip: ${props.tip.toFixed(2)}
-      <br />
-      Total: ${props.total.toFixed(2)}
-      <br />
-      {props.splitBetween > 1 ? (
-        <>
-          Total per person: ${(props.total / +props.splitBetween).toFixed(2)}
-          <br />
-        </>
-      ) : null}
+      <CardContent>
+        <Stack spacing={1}>
+          <Stack direction="row" spacing={1}>
+            <Typography variant="h6">{props.label}:</Typography>
+            <Typography variant="h6">${props.total.toFixed(2)}</Typography>
+          </Stack>
+          <Stack
+            spacing={1}
+            direction="row"
+            divider={<Divider orientation="vertical" flexItem />}
+          >
+            <Item>Tip: ${props.tip.toFixed(2)}</Item>
+            {props.splitBetween > 1 ? (
+              <Item>
+                Amount Per Person: $
+                {(props.total / +props.splitBetween).toFixed(2)}
+              </Item>
+            ) : null}
+          </Stack>
+        </Stack>
+      </CardContent>
     </>
   );
 };
@@ -48,14 +63,19 @@ const TipCalculatorRoute = () => {
   const [total, setTotal] = useState("");
 
   const calculateTip = useMemo(() => {
-    const tip = +subTotal * (+percentage / 100);
+    const percent = +percentage / 100;
+    const calculatedTip = isNaN(+subTotal)
+      ? +total * percent
+      : +subTotal * percent;
+    const final = +total + calculatedTip;
+
     return {
-      rawtotalAmount: +total + +tip,
-      rawTipAmount: tip,
-      tipAmountRoundDown: Math.floor(tip),
-      totalRoundedDown: +total + +Math.floor(tip),
-      tipAmountRoundUp: Math.ceil(tip),
-      totalRoundedUp: +total + +Math.ceil(tip),
+      rawtotalAmount: final,
+      rawTipAmount: calculatedTip,
+      tipAmountRoundDown: Math.floor(final) - +total,
+      totalRoundedDown: Math.floor(final),
+      tipAmountRoundUp: Math.ceil(final) - +total,
+      totalRoundedUp: Math.ceil(final),
     };
   }, [subTotal, total, percentage]);
 
@@ -70,15 +90,6 @@ const TipCalculatorRoute = () => {
     >
       <Grid xs={12} sm={6}>
         <Typography variant={"h3"}>Tip Calculator</Typography>
-      </Grid>
-      <Grid xs={12} sm={6}>
-        <Alert severity="info">
-          <Typography variant={"body1"}>
-            This tip caclulator generates the tip amount as a percentage of the
-            subtotal and adds it to the total. It also provides the option to
-            split the bill between a number of people.
-          </Typography>
-        </Alert>
       </Grid>
       <Grid xs={12} sm={6}>
         <TextField
@@ -142,24 +153,32 @@ const TipCalculatorRoute = () => {
         </FormControl>
       </Grid>
       <Grid xs={12} sm={6}>
+        <Alert severity="info">
+          <Typography variant={"body1"}>
+            This tip caclulator generates the tip amount as a percentage of the
+            subtotal when present, otherwise it uses the total.
+          </Typography>
+        </Alert>
+      </Grid>
+      <Grid xs={12} sm={6}>
         <Typography variant={"body1"}>
           <Summary
             tip={calculateTip.rawTipAmount}
             total={calculateTip.rawtotalAmount}
             splitBetween={splitBetween}
-            label="RAW"
+            label="Total"
           />
           <Summary
             tip={calculateTip.tipAmountRoundDown}
             total={calculateTip.totalRoundedDown}
             splitBetween={splitBetween}
-            label="ROUNDED DOWN"
+            label="Rounded Down"
           />
           <Summary
             tip={calculateTip.tipAmountRoundUp}
             total={calculateTip.totalRoundedUp}
             splitBetween={splitBetween}
-            label="ROUNDED UP"
+            label="Rounded Up"
           />
         </Typography>
       </Grid>
