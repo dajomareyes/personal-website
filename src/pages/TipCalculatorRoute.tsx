@@ -1,4 +1,9 @@
-import { Alert, CardContent, Paper, Stack, styled } from "@mui/material";
+import {
+  Alert,
+  CardContent,
+  Chip,
+  Stack,
+} from "@mui/material";
 import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -18,36 +23,35 @@ type SummaryProps = {
   total: number;
   label: string;
   splitBetween: number;
+  tags?: string[];
+  setTags: (tags: Tags[]) => void;
 };
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#eceff1",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
-
 const Summary = (props: SummaryProps) => {
+  const tagsSum = props.tags?.reduce((acc, tag) => acc + tag.value, 0) || 0;
+  const calculatedTotal = props.total - tagsSum;
+  console.log(tagsSum);
+
   return (
     <>
       <CardContent>
         <Stack spacing={1}>
           <Stack direction="row" spacing={1}>
             <Typography variant="h6">{props.label}:</Typography>
-            <Typography variant="h6">${props.total.toFixed(2)}</Typography>
+            <Typography variant="h6">${calculatedTotal.toFixed(2)}</Typography>
           </Stack>
           <Stack
             spacing={1}
             direction="row"
             divider={<Divider orientation="vertical" flexItem />}
           >
-            <Item>Tip: ${props.tip.toFixed(2)}</Item>
+            <Chip label={`Tip: ${props.tip.toFixed(2)}`} />
             {props.splitBetween > 1 ? (
-              <Item>
-                Amount Per Person: $
-                {(props.total / +props.splitBetween).toFixed(2)}
-              </Item>
+              <Chip
+                label={`Amount Per Person: $${(
+                  calculatedTotal / +props.splitBetween
+                ).toFixed(2)}`}
+              />
             ) : null}
           </Stack>
         </Stack>
@@ -61,6 +65,7 @@ const TipCalculatorRoute = () => {
   const [subTotal, setSubTotal] = useState("");
   const [splitBetween, setSplitBetween] = useState(0);
   const [total, setTotal] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
 
   const calculateTip = useMemo(() => {
     const percent = +percentage / 100;
@@ -167,20 +172,29 @@ const TipCalculatorRoute = () => {
             total={calculateTip.rawtotalAmount}
             splitBetween={splitBetween}
             label="Total"
+            tags={tags}
+            setTags={setTags}
           />
           <Summary
             tip={calculateTip.tipAmountRoundDown}
             total={calculateTip.totalRoundedDown}
             splitBetween={splitBetween}
             label="Rounded Down"
+            tags={tags}
+            setTags={setTags}
           />
           <Summary
             tip={calculateTip.tipAmountRoundUp}
             total={calculateTip.totalRoundedUp}
             splitBetween={splitBetween}
             label="Rounded Up"
+            tags={tags}
+            setTags={setTags}
           />
         </Typography>
+      </Grid>
+      <Grid xs={12} sm={6}>
+        <SimpleGrid />
       </Grid>
     </Grid>
   );
