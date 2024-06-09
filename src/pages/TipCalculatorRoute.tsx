@@ -1,9 +1,4 @@
-import {
-  Alert,
-  CardContent,
-  Chip,
-  Stack,
-} from "@mui/material";
+import { Alert, CardContent, Chip, Stack } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import FormControl from "@mui/material/FormControl";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -14,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/system/Unstable_Grid";
 import { useMemo, useState } from "react";
+import { TipsDataGrid } from "../components/TipsDataGrid.component";
 
 const percentages = [10, 12, 15, 18, 20, 22, 25];
 const numberOfPeople = [2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -194,7 +190,7 @@ const TipCalculatorRoute = () => {
         </Typography>
       </Grid>
       <Grid xs={12} sm={6}>
-        <SimpleGrid />
+        <TipsDataGrid />
       </Grid>
     </Grid>
   );
