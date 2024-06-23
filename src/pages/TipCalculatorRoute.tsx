@@ -94,11 +94,11 @@ const TipCalculatorRoute = () => {
       <Grid xs={12} sm={6}>
         <TextField
           fullWidth
+          type="number"
           label="Bill Sub-Total (USD)"
           value={subTotal}
           onChange={(e) => setSubTotal(e.target.value)}
           InputProps={{
-            type: "number",
             startAdornment: <InputAdornment position="start">$</InputAdornment>,
           }}
         />
@@ -107,10 +107,10 @@ const TipCalculatorRoute = () => {
         <TextField
           fullWidth
           label="Bill Total (USD)"
+          type="number"
           value={total}
           onChange={(e) => setTotal(e.target.value)}
           InputProps={{
-            type: "number",
             startAdornment: <InputAdornment position="start">$</InputAdornment>,
           }}
         />
