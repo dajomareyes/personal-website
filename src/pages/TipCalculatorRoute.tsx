@@ -99,6 +99,9 @@ const TipCalculatorRoute = () => {
           value={subTotal}
           onChange={(e) => setSubTotal(e.target.value)}
           InputProps={{
+            inputProps: {
+              inputMode: "decimal",
+            },
             startAdornment: <InputAdornment position="start">$</InputAdornment>,
           }}
         />
@@ -111,6 +114,9 @@ const TipCalculatorRoute = () => {
           value={total}
           onChange={(e) => setTotal(e.target.value)}
           InputProps={{
+            inputProps: {
+              inputMode: "decimal",
+            },
             startAdornment: <InputAdornment position="start">$</InputAdornment>,
           }}
         />
