@@ -1,42 +1,39 @@
-import { Suspense, useRef, useState } from "react";
 import { Canvas, ThreeElements, useFrame, useLoader } from "@react-three/fiber";
-import { NearestFilter, TextureLoader, Vector2 } from "three";
+import { NearestFilter, TextureLoader } from "three";
 import chickenIdle from "../assets/sprites/chicken_idle_strip4.png";
+import { useRef } from "react";
 
-// function Box(props: ThreeElements["mesh"]) {
-//   const ref = useRef<THREE.Mesh>(null!);
-//   const [hovered, hover] = useState(false);
-//   const [clicked, click] = useState(false);
-//   useFrame((_, delta) => (ref.current.rotation.x += delta));
-//   return (
-//     <mesh
-//       {...props}
-//       ref={ref}
-//       scale={clicked ? 1.5 : 1}
-//       onClick={() => click(!clicked)}
-//       onPointerOver={() => hover(true)}
-//       onPointerOut={() => hover(false)}
-//     >
-//       <boxGeometry args={[1, 1, 1]} />
-//       <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
-//     </mesh>
-//   );
-// }
+type AnimatedSpriteProps = {
+  spriteOpts: ThreeElements["sprite"];
+  animationSpeed: number;
+  source: string;
+  frames: number;
+};
 
-const currentTile = 0;
+const AnimatedSprite = (opts: AnimatedSpriteProps) => {
+  const t = useRef(0);
+  const currentFrame = useRef(0);
 
-function Chicken(props: ThreeElements["sprite"]) {
-  const offsetX = (currentTile % 4) / 4;
-  const [cmap] = useLoader(TextureLoader, [chickenIdle]);
+  const [cmap] = useLoader(TextureLoader, [opts.source]);
   cmap.magFilter = NearestFilter;
-  cmap.repeat.set(1 / 4, 1);
-  cmap.offset.x = offsetX;
+  cmap.repeat.set(1 / opts.frames, 1);
+
+  useFrame((_, delta) => {
+    t.current += delta * opts.animationSpeed;
+
+    if (t.current > opts.frames) {
+      t.current = 0;
+      currentFrame.current = (currentFrame.current + 1) % 4;
+      cmap.offset.x = currentFrame.current / opts.frames;
+    }
+  });
+
   return (
-    <sprite {...props} scale={1}>
+    <sprite {...opts.spriteOpts}>
       <spriteMaterial map={cmap}></spriteMaterial>
     </sprite>
   );
-}
+};
 
 const Experiment = () => {
   return (
@@ -51,9 +48,15 @@ const Experiment = () => {
           intensity={Math.PI}
         />
         <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
-        {/* <Box position={[-1.2, 0, 0]} /> */}
-        <Chicken position={[-1.2, 0, 0]} />
-        {/* <Box position={[1.2, 0, 0]} /> */}
+        <AnimatedSprite
+          spriteOpts={{
+            position: [0, 0, 0],
+            scale: 5,
+          }}
+          animationSpeed={20}
+          source={chickenIdle}
+          frames={4}
+        />
       </Canvas>
     </div>
   );
