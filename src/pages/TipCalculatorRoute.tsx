@@ -1,16 +1,30 @@
-import { Alert, CardContent, Paper, Stack, styled } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  FilledInput,
+  FormControl,
+  Input,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Paper,
+  Select,
+  Stack,
+  Step,
+  StepContent,
+  StepLabel,
+  Stepper,
+  styled,
+  SwipeableDrawer,
+} from "@mui/material";
 import Divider from "@mui/material/Divider";
-import FormControl from "@mui/material/FormControl";
-import InputAdornment from "@mui/material/InputAdornment";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/system/Unstable_Grid";
+import Grid from "@mui/material/Grid2";
 import { useMemo, useState } from "react";
 
-const percentages = [10, 12, 15, 18, 20, 22, 25];
+const tipValues = [12, 15, 18, 20, 22];
 const numberOfPeople = [2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 type SummaryProps = {
@@ -28,39 +42,54 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const Summary = (props: SummaryProps) => {
-  return (
-    <>
-      <CardContent>
-        <Stack spacing={1}>
-          <Stack direction="row" spacing={1}>
-            <Typography variant="h6">{props.label}:</Typography>
-            <Typography variant="h6">${props.total.toFixed(2)}</Typography>
-          </Stack>
-          <Stack
-            spacing={1}
-            direction="row"
-            divider={<Divider orientation="vertical" flexItem />}
-          >
-            <Item>Tip: ${props.tip.toFixed(2)}</Item>
-            {props.splitBetween > 1 ? (
-              <Item>
-                Amount Per Person: $
-                {(props.total / +props.splitBetween).toFixed(2)}
-              </Item>
-            ) : null}
-          </Stack>
-        </Stack>
-      </CardContent>
-    </>
-  );
-};
+const Puller = styled("div")(({ theme }) => ({
+  width: 30,
+  height: 6,
+  backgroundColor: theme.palette.grey[300],
+  borderRadius: 3,
+  position: "absolute",
+  marginBottom: 10,
+  top: 8,
+  left: "calc(50% - 15px)",
+  ...theme.applyStyles("dark", {
+    backgroundColor: theme.palette.grey[900],
+  }),
+}));
+
+const StyledBox = styled("div")(({ theme }) => ({
+  backgroundColor: "#fff",
+  ...theme.applyStyles("dark", {
+    backgroundColor: theme.palette.grey[800],
+  }),
+}));
+
+const steps = [
+  {
+    label: "Enter Bill Total",
+    name: "total",
+    description:
+      "Enter the total amount of the bill. By default, the tip will be calculated based on the total amount, but optionally you can enter the subtotal.",
+  },
+  {
+    label: "Select Tip Percentage",
+    name: "percentage",
+    description: "Select the tip percentage you would like to calculate.",
+  },
+  {
+    label: "Split Between (Optional)",
+    name: "split",
+    description:
+      "Enter the number of people you would like to split the bill between. Default is 1.",
+  },
+];
 
 const TipCalculatorRoute = () => {
-  const [percentage, setPercentage] = useState("");
+  const [percentage, setPercentage] = useState(0);
   const [subTotal, setSubTotal] = useState("");
-  const [splitBetween, setSplitBetween] = useState(0);
+  const [splitBetween, setSplitBetween] = useState("");
+  const [drawerOpen, setDrawerIsOpen] = useState(false);
   const [total, setTotal] = useState("");
+  const [activeStep, setActiveStep] = useState(0);
 
   const calculateTip = useMemo(() => {
     const percent = +percentage / 100;
@@ -79,116 +108,144 @@ const TipCalculatorRoute = () => {
     };
   }, [subTotal, total, percentage]);
 
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
+  };
+
+  const toggleDrawer = () => {
+    setDrawerIsOpen(!drawerOpen);
+  };
+
   return (
-    <Grid
-      mt={"4vh"}
-      container
-      justifyContent={"center"}
-      alignItems={"center"}
-      spacing={2}
-      direction="column"
-    >
-      <Grid xs={12} sm={6}>
-        <Typography variant={"h3"}>Tip Calculator</Typography>
-      </Grid>
-      <Grid xs={12} sm={6}>
-        <TextField
-          fullWidth
-          type="number"
-          label="Bill Sub-Total (USD)"
-          value={subTotal}
-          onChange={(e) => setSubTotal(e.target.value)}
-          InputProps={{
-            inputProps: {
-              inputMode: "decimal",
-            },
-            startAdornment: <InputAdornment position="start">$</InputAdornment>,
+    <>
+      <SwipeableDrawer
+        anchor={"bottom"}
+        open={drawerOpen}
+        onClose={toggleDrawer}
+        onOpen={toggleDrawer}
+        swipeAreaWidth={56}
+        disableSwipeToOpen={false}
+      >
+        <StyledBox
+          sx={{
+            position: "absolute",
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+            visibility: "visible",
+            right: 0,
+            left: 0,
           }}
-        />
-      </Grid>
-      <Grid xs={12} sm={6}>
-        <TextField
-          fullWidth
-          label="Bill Total (USD)"
-          type="number"
-          value={total}
-          onChange={(e) => setTotal(e.target.value)}
-          InputProps={{
-            inputProps: {
-              inputMode: "decimal",
-            },
-            startAdornment: <InputAdornment position="start">$</InputAdornment>,
-          }}
-        />
-      </Grid>
-      <Grid xs={12} sm={6}>
-        <FormControl fullWidth>
-          <InputLabel id="percetange-drop-down-label">
-            Tip Percentage
-          </InputLabel>
-          <Select
-            value={percentage}
-            label="Tip Percentage"
-            onChange={(event) => {
-              setPercentage(event.target?.value);
-            }}
-          >
-            {percentages.map((percent) => (
-              <MenuItem value={percent}>{percent}%</MenuItem>
+        >
+          <Puller />
+        </StyledBox>
+        <Stack spacing={2} margin={2} marginTop={4}>
+          {tipValues.map((value) => (
+            <Button
+              key={value}
+              variant={"outlined"}
+              onClick={() => {
+                setPercentage(value);
+                toggleDrawer();
+                handleNext();
+              }}
+            >
+              {value}%
+            </Button>
+          ))}
+        </Stack>
+      </SwipeableDrawer>
+      <Grid container spacing={2} justifyContent="center" margin={2}>
+        <Grid size={{ xs: 12, sm: 6 }} marginTop={3}>
+          <Stepper activeStep={activeStep} orientation="vertical">
+            {steps.map((step, index) => (
+              <Step key={step.label}>
+                <StepLabel
+                  optional={
+                    index === steps.length - 1 ? (
+                      <Typography variant="caption">Last step</Typography>
+                    ) : null
+                  }
+                >
+                  {step.label}
+                </StepLabel>
+                <StepContent>
+                  <Stack spacing={2}>
+                    <Typography>{step.description}</Typography>
+                    {step.name === "total" && (
+                      <OutlinedInput
+                        type="number"
+                        placeholder="Total"
+                        value={total}
+                        inputMode="decimal"
+                        onChange={(e) => setTotal(e.target.value)}
+                      />
+                    )}
+                    {step.name === "split" && (
+                      <OutlinedInput
+                        type="number"
+                        placeholder="Split Between"
+                        value={splitBetween}
+                        inputMode="numeric"
+                        onChange={(e) => setSplitBetween(e.target.value)}
+                      />
+                    )}
+                    <Box sx={{ mb: 2 }}>
+                      <Button
+                        variant="contained"
+                        onClick={
+                          step.name === "percentage" ? toggleDrawer : handleNext
+                        }
+                        sx={{ mt: 1, mr: 1 }}
+                      >
+                        {index === steps.length - 1 ? "Finish" : "Continue"}
+                      </Button>
+                      <Button
+                        disabled={index === 0}
+                        onClick={handleBack}
+                        sx={{ mt: 1, mr: 1 }}
+                      >
+                        Back
+                      </Button>
+                    </Box>
+                  </Stack>
+                </StepContent>
+              </Step>
             ))}
-          </Select>
-        </FormControl>
+          </Stepper>
+          {activeStep === steps.length && (
+            <Paper square elevation={0} sx={{ p: 3 }}>
+              <Typography>
+                All steps completed - you&apos;re finished
+              </Typography>
+              <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+                Reset
+              </Button>
+            </Paper>
+          )}
+
+          <Card>
+            <CardContent>
+              <Stack spacing={2} alignContent="left">
+
+                  <Typography variant="h4">$250.00</Typography>
+                  <Typography variant="body1">
+                    {calculateTip.tipAmountRoundDown}
+                  </Typography>
+              </Stack>
+
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
-      <Grid xs={12} sm={6}>
-        <FormControl fullWidth>
-          <InputLabel id="percetange-drop-down-label">
-            Split Between (Optional)
-          </InputLabel>
-          <Select
-            value={splitBetween > 1 ? splitBetween : undefined}
-            label="Split Between (Optional)"
-            onChange={(event) => {
-              setSplitBetween(+event.target.value);
-            }}
-          >
-            <MenuItem value={1}>Do not split</MenuItem>
-            {numberOfPeople.map((people) => (
-              <MenuItem value={people}>{people}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Grid>
-      <Grid xs={12} sm={6}>
-        <Alert severity="info">
-          <Typography variant={"body1"}>
-            This tip caclulator generates the tip amount as a percentage of the
-            subtotal when present, otherwise it uses the total.
-          </Typography>
-        </Alert>
-      </Grid>
-      <Grid xs={12} sm={6}>
-        <Typography variant={"body1"}>
-          <Summary
-            tip={calculateTip.rawTipAmount}
-            total={calculateTip.rawtotalAmount}
-            splitBetween={splitBetween}
-            label="Total"
-          />
-          <Summary
-            tip={calculateTip.tipAmountRoundDown}
-            total={calculateTip.totalRoundedDown}
-            splitBetween={splitBetween}
-            label="Rounded Down"
-          />
-          <Summary
-            tip={calculateTip.tipAmountRoundUp}
-            total={calculateTip.totalRoundedUp}
-            splitBetween={splitBetween}
-            label="Rounded Up"
-          />
-        </Typography>
-      </Grid>
-    </Grid>
+    </>
   );
 };
 

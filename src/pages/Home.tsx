@@ -1,6 +1,6 @@
 import { Avatar, Chip, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/system";
-import Grid from "@mui/system/Unstable_Grid";
+import Grid from "@mui/material/Grid2";
 import avatarImage from "../assets/avatar-david.jpeg";
 
 const StyledDiv = styled("div")(() => ({
