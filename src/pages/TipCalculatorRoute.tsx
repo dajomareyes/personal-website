@@ -83,6 +83,52 @@ const steps = [
   },
 ];
 
+const SummaryCard = (props: SummaryProps) => {
+  return (
+    <Card>
+      <CardContent>
+        <Stack spacing={0} alignContent="left">
+          <Typography variant="subtitle1">props.label</Typography>
+          <Typography variant="h4">
+            ${props.total.toFixed(2)}
+          </Typography>
+          <Typography variant="subtitle2">
+            Tip Amount: ${props.tipAmountRoundDown} Breakdown: ${(props.total / +props.splitBetween).toFixed(2)}
+          </Typography>
+        </Stack>
+      </CardContent>
+    </Card>
+  );
+};
+
+const Summary = (props: SummaryProps) => {
+  return (
+    <>
+      <CardContent>
+        <Stack spacing={1}>
+          <Stack direction="row" spacing={1}>
+            <Typography variant="h6">{props.label}:</Typography>
+            <Typography variant="h6">${props.total.toFixed(2)}</Typography>
+          </Stack>
+          <Stack
+            spacing={1}
+            direction="row"
+            divider={<Divider orientation="vertical" flexItem />}
+          >
+            <Item>Tip: ${props.tip.toFixed(2)}</Item>
+            {props.splitBetween > 1 ? (
+              <Item>
+                Amount Per Person: $
+                {(props.total / +props.splitBetween).toFixed(2)}
+              </Item>
+            ) : null}
+          </Stack>
+        </Stack>
+      </CardContent>
+    </>
+  );
+};
+
 const TipCalculatorRoute = () => {
   const [percentage, setPercentage] = useState(0);
   const [subTotal, setSubTotal] = useState("");
@@ -230,19 +276,6 @@ const TipCalculatorRoute = () => {
               </Button>
             </Paper>
           )}
-
-          <Card>
-            <CardContent>
-              <Stack spacing={2} alignContent="left">
-
-                  <Typography variant="h4">$250.00</Typography>
-                  <Typography variant="body1">
-                    {calculateTip.tipAmountRoundDown}
-                  </Typography>
-              </Stack>
-
-            </CardContent>
-          </Card>
         </Grid>
       </Grid>
     </>
