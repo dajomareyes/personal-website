@@ -2,6 +2,8 @@ import { Avatar, Chip, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import Grid from "@mui/system/Unstable_Grid";
 import avatarImage from "../assets/avatar-david.jpeg";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const StyledDiv = styled("div")(() => ({
   display: "grid",
@@ -15,8 +17,57 @@ const StyledDiv = styled("div")(() => ({
 }));
 
 const Home = () => {
+  const [clickCount, setClickCount] = useState(0);
+  const [showResume, setShowResume] = useState(false);
+
+  const handleAvatarClick = () => {
+    const newCount = clickCount + 1;
+    setClickCount(newCount);
+
+    if (newCount >= 7) {
+      setShowResume(true);
+    }
+  };
+
+  const getAvatarSx = () => {
+    if (clickCount >= 4 && clickCount < 7) {
+      return {
+        width: 56,
+        height: 56,
+        cursor: "pointer",
+        border: "3px solid #00ff00",
+        boxShadow: "0 0 15px #00ff00, 0 0 25px #00ff00",
+        transition: "all 0.3s ease",
+        animation: "pulse 1s infinite",
+      };
+    }
+    return { width: 56, height: 56, cursor: "pointer" };
+  };
+
   return (
     <StyledDiv>
+      {/* Keyframe animation for pulse effect */}
+      <style>{`
+        @keyframes pulse {
+          0%, 100% {
+            box-shadow: 0 0 15px #00ff00, 0 0 25px #00ff00;
+          }
+          50% {
+            box-shadow: 0 0 25px #00ff00, 0 0 35px #00ff00, 0 0 45px #00ff00;
+          }
+        }
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+
       <Grid
         container
         justifyContent={"center"}
@@ -27,7 +78,8 @@ const Home = () => {
           <Avatar
             alt="David Reyes"
             src={avatarImage}
-            sx={{ width: 56, height: 56 }}
+            sx={getAvatarSx()}
+            onClick={handleAvatarClick}
           />
         </Grid>
         <Grid>
@@ -51,6 +103,18 @@ const Home = () => {
               href="https://github.com/dajomareyes"
               clickable
             />
+            {showResume && (
+              <Chip
+                label="Resume"
+                color="secondary"
+                component={Link}
+                to="/resume"
+                clickable
+                sx={{
+                  animation: "fadeIn 0.5s ease-in",
+                }}
+              />
+            )}
           </Stack>
         </Grid>
       </Grid>

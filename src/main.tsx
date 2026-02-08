@@ -6,11 +6,13 @@ import Home from "./pages/Home";
 import { ThemeProvider } from "@mui/material";
 import { theme } from "./theme";
 import TipCalculatorRoute from "./pages/TipCalculatorRoute";
+import Resume from "./pages/Resume";
 
 const router = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/home", element: <Home /> },
   { path: "/tips", element: <TipCalculatorRoute /> },
+  { path: "/resume", element: <Resume /> },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

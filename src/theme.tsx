@@ -6,6 +6,15 @@ import { createTheme } from "@mui/material/styles";
 // dark green rgba value - rgba(23, 63, 47, 1)
 
 export const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#047E82",
+      dark: "#035f63",
+    },
+    secondary: {
+      main: "#047E82",
+    },
+  },
   // palette: {
   //   text: {
   //     primary: "#FEFCF3",
