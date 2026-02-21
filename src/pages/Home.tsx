@@ -44,6 +44,21 @@ const Home = () => {
     return { width: 56, height: 56, cursor: "pointer" };
   };
 
+  const getHintMessage = () => {
+    switch (clickCount) {
+      case 3:
+        return "🤔 Hmm, something feels different...";
+      case 4:
+        return "✨ Ooh, sparkly! Keep going!";
+      case 5:
+        return "🔥 You're getting warmer...";
+      case 6:
+        return "🎯 Almost there! One more click!";
+      default:
+        return null;
+    }
+  };
+
   return (
     <StyledDiv>
       {/* Keyframe animation for pulse effect */}
@@ -118,6 +133,29 @@ const Home = () => {
           </Stack>
         </Grid>
       </Grid>
+
+      {/* Hint Message */}
+      {getHintMessage() && (
+        <Typography
+          variant="body2"
+          sx={{
+            position: "fixed",
+            bottom: "2rem",
+            left: "50%",
+            transform: "translateX(-50%)",
+            backgroundColor: "rgba(0, 255, 0, 0.1)",
+            border: "2px solid #00ff00",
+            borderRadius: "20px",
+            padding: "0.75rem 1.5rem",
+            boxShadow: "0 0 20px rgba(0, 255, 0, 0.3)",
+            animation: "fadeIn 0.3s ease-in",
+            fontWeight: 500,
+            color: "#00cc00",
+          }}
+        >
+          {getHintMessage()}
+        </Typography>
+      )}
     </StyledDiv>
   );
 };
