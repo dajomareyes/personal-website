@@ -13,6 +13,8 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import ResumePDF from "./ResumePDF";
 import avatarImage from "../assets/avatar-david.jpeg";
 import { useState, useEffect } from "react";
+import { ResumeData } from "../types/resume";
+import resumeData from "../data/resume-data.json";
 
 const StyledContainer = styled("div")(() => ({
   minHeight: "100vh",
@@ -51,7 +53,7 @@ const Sidebar = styled(Box)(({ theme }) => ({
   padding: "3rem 2rem",
   position: "sticky",
   top: 0,
-  height: "100vh",
+  height: "auto",
   overflowY: "auto",
   "@media print": {
     position: "static",
@@ -229,6 +231,9 @@ const AnimatedCounter = ({
 };
 
 const Resume = () => {
+  // Cast the imported JSON to the ResumeData type
+  const data: ResumeData = resumeData as ResumeData;
+
   const [githubStats, setGithubStats] = useState({
     totalCommits: 0,
     mergedPRs: 0,
@@ -240,7 +245,8 @@ const Resume = () => {
   useEffect(() => {
     const fetchGitHubStats = async () => {
       try {
-        const username = "dajomareyes";
+        const username =
+          data.personal.contactInfo.github.split("/").pop() || "dajomareyes";
 
         // Fetch user data for public repos count
         const userResponse = await fetch(
@@ -255,7 +261,8 @@ const Resume = () => {
         const prsData = await prsResponse.json();
 
         setGithubStats({
-          totalCommits: 500, // GitHub API doesn't easily give total commits, using placeholder
+          totalCommits:
+            parseInt(data.stats.contributions.replace("+", "")) || 500,
           mergedPRs: prsData.total_count || 0,
           totalRepos: userData.public_repos || 0,
           loading: false,
@@ -263,7 +270,8 @@ const Resume = () => {
       } catch (error) {
         console.error("Error fetching GitHub stats:", error);
         setGithubStats({
-          totalCommits: 500,
+          totalCommits:
+            parseInt(data.stats.contributions.replace("+", "")) || 500,
           mergedPRs: 50,
           totalRepos: 20,
           loading: false,
@@ -272,22 +280,7 @@ const Resume = () => {
     };
 
     fetchGitHubStats();
-  }, []);
-
-  const skills = [
-    "TypeScript",
-    "JavaScript",
-    "React",
-    "Node.js",
-    "Python",
-    "Java",
-    "Git",
-    "Docker",
-    "AWS",
-    "PostgreSQL",
-    "MongoDB",
-    "REST APIs",
-  ];
+  }, [data]);
 
   return (
     <StyledContainer>
@@ -304,7 +297,7 @@ const Resume = () => {
         >
           <PDFDownloadLink
             document={<ResumePDF />}
-            fileName="David_Reyes_Resume.pdf"
+            fileName={`${data.personal.firstName}_${data.personal.lastName}_Resume.pdf`}
             style={{ textDecoration: "none" }}
           >
             {({ loading }) => (
@@ -330,7 +323,7 @@ const Resume = () => {
             <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
               <Avatar
                 src={avatarImage}
-                alt="David Joshua Reyes"
+                alt={data.personal.fullName}
                 sx={{
                   width: 150,
                   height: 150,
@@ -349,7 +342,7 @@ const Resume = () => {
                 textAlign: "center",
               }}
             >
-              David Reyes
+              {data.personal.firstName} {data.personal.lastName}
             </Typography>
             <Typography
               variant="h5"
@@ -359,7 +352,7 @@ const Resume = () => {
                 textAlign: "center",
               }}
             >
-              Software Engineer
+              {data.personal.title}
             </Typography>
             <Typography
               variant="body1"
@@ -368,7 +361,7 @@ const Resume = () => {
                 textAlign: "center",
               }}
             >
-              New York City Metropolitan Area
+              {data.personal.location}
             </Typography>
           </SidebarSection>
 
@@ -387,7 +380,7 @@ const Resume = () => {
                   Email
                 </Typography>
                 <Typography variant="body2">
-                  davidjoshuareyes@gmail.com
+                  {data.personal.contactInfo.email}
                 </Typography>
               </Box>
               <Box>
@@ -396,7 +389,7 @@ const Resume = () => {
                 </Typography>
                 <Typography variant="body2">
                   <a
-                    href="https://linkedin.com/in/david-joshua-reyes-7aa50ab3"
+                    href={data.personal.contactInfo.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: "white", textDecoration: "underline" }}
@@ -411,12 +404,12 @@ const Resume = () => {
                 </Typography>
                 <Typography variant="body2">
                   <a
-                    href="https://github.com/dajomareyes"
+                    href={data.personal.contactInfo.github}
                     target="_blank"
                     rel="noopener noreferrer"
                     style={{ color: "white", textDecoration: "underline" }}
                   >
-                    dajomareyes
+                    {data.personal.contactInfo.github.split("/").pop()}
                   </a>
                 </Typography>
               </Box>
@@ -441,7 +434,12 @@ const Resume = () => {
                     fontWeight={700}
                     sx={{ mb: 0.25, lineHeight: 1 }}
                   >
-                    <AnimatedCounter end={5} suffix="+" />
+                    <AnimatedCounter
+                      end={parseInt(
+                        data.stats.yearsOfExperience.replace("+", ""),
+                      )}
+                      suffix="+"
+                    />
                   </Typography>
                   <Typography
                     variant="caption"
@@ -529,7 +527,7 @@ const Resume = () => {
               SKILLS
             </Typography>
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-              {skills.map((skill) => (
+              {data.skills.map((skill) => (
                 <Chip
                   key={skill}
                   label={skill}
@@ -557,90 +555,48 @@ const Resume = () => {
           <SectionTitle>EXPERIENCE</SectionTitle>
 
           <TimelineContainer>
-            {/* Vestwell */}
-            <TimelineItem>
-              <TimelineDot />
-              <TimelineLine />
-              <TimelineCard elevation={1}>
-                <JobTitle>Vestwell</JobTitle>
-                <CompanyInfo>Software Engineer | New York, NY</CompanyInfo>
-                <CompanyInfo sx={{ fontStyle: "italic", mb: 1 }}>
-                  [Start Date] - Present
-                </CompanyInfo>
-                <Stack component="ul" spacing={0.5} sx={{ pl: 2.5, mt: 1 }}>
-                  <Typography
-                    component="li"
-                    variant="body2"
-                    sx={{ lineHeight: 1.6 }}
-                  >
-                    [Responsibility/achievement - to be filled]
-                  </Typography>
-                  <Typography
-                    component="li"
-                    variant="body2"
-                    sx={{ lineHeight: 1.6 }}
-                  >
-                    [Responsibility/achievement - to be filled]
-                  </Typography>
-                  <Typography
-                    component="li"
-                    variant="body2"
-                    sx={{ lineHeight: 1.6 }}
-                  >
-                    [Responsibility/achievement - to be filled]
-                  </Typography>
-                </Stack>
-              </TimelineCard>
-            </TimelineItem>
-
-            {/* Previous Position Placeholder */}
-            <TimelineItem>
-              <TimelineDot />
-              <TimelineCard elevation={1}>
-                <JobTitle>[Previous Company Name]</JobTitle>
-                <CompanyInfo>[Job Title] | [Location]</CompanyInfo>
-                <CompanyInfo sx={{ fontStyle: "italic", mb: 1 }}>
-                  [Start Date] - [End Date]
-                </CompanyInfo>
-                <Stack component="ul" spacing={0.5} sx={{ pl: 2.5, mt: 1 }}>
-                  <Typography
-                    component="li"
-                    variant="body2"
-                    sx={{ lineHeight: 1.6 }}
-                  >
-                    [Responsibility/achievement - to be filled]
-                  </Typography>
-                  <Typography
-                    component="li"
-                    variant="body2"
-                    sx={{ lineHeight: 1.6 }}
-                  >
-                    [Responsibility/achievement - to be filled]
-                  </Typography>
-                </Stack>
-              </TimelineCard>
-            </TimelineItem>
+            {data.experience.map((job, index) => (
+              <TimelineItem key={index}>
+                <TimelineDot />
+                {index < data.experience.length - 1 && <TimelineLine />}
+                <TimelineCard elevation={1}>
+                  <JobTitle>{job.company}</JobTitle>
+                  <CompanyInfo>
+                    {job.position} | {job.location}
+                  </CompanyInfo>
+                  <CompanyInfo sx={{ fontStyle: "italic", mb: 1 }}>
+                    {job.startDate} - {job.endDate}
+                  </CompanyInfo>
+                  <Stack component="ul" spacing={0.5} sx={{ pl: 2.5, mt: 1 }}>
+                    {job.responsibilities.map((responsibility, respIndex) => (
+                      <Typography
+                        key={respIndex}
+                        component="li"
+                        variant="body2"
+                        sx={{ lineHeight: 1.6 }}
+                      >
+                        {responsibility}
+                      </Typography>
+                    ))}
+                  </Stack>
+                </TimelineCard>
+              </TimelineItem>
+            ))}
           </TimelineContainer>
 
           {/* Education */}
           <SectionTitle>EDUCATION</SectionTitle>
           <Box sx={{ mt: 2 }}>
-            <JobTitle>New Jersey Institute of Technology (NJIT)</JobTitle>
-            <CompanyInfo>Bachelor of Science in Computer Science</CompanyInfo>
+            <JobTitle>{data.education.institution}</JobTitle>
+            <CompanyInfo>{data.education.degree}</CompanyInfo>
             <CompanyInfo sx={{ fontStyle: "italic", mb: 2 }}>
-              2013 - 2017
+              {data.education.startYear} - {data.education.endYear}
             </CompanyInfo>
             <Typography variant="body2" fontWeight={600} sx={{ mb: 1 }}>
               Relevant Coursework:
             </Typography>
             <Grid container spacing={1}>
-              {[
-                "Data Structures and Algorithms",
-                "Database Principles",
-                "Guided Design in Software Engineering",
-                "Mobile Applications & Design",
-                "Operating Systems",
-              ].map((course) => (
+              {data.education.coursework.map((course) => (
                 <Grid key={course} xs={12} sm={6}>
                   <Typography variant="body2" sx={{ pl: 1 }}>
                     • {course}

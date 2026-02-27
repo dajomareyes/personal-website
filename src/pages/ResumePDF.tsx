@@ -6,6 +6,8 @@ import {
   StyleSheet,
   Link,
 } from "@react-pdf/renderer";
+import { ResumeData } from "../types/resume";
+import resumeData from "../data/resume-data.json";
 
 // Define styles for the PDF
 const styles = StyleSheet.create({
@@ -144,52 +146,34 @@ const styles = StyleSheet.create({
 });
 
 const ResumePDF = () => {
-  const skills = [
-    "TypeScript",
-    "JavaScript",
-    "React",
-    "Node.js",
-    "Python",
-    "Java",
-    "Git",
-    "Docker",
-    "AWS",
-    "PostgreSQL",
-    "MongoDB",
-    "REST APIs",
-  ];
-
-  const coursework = [
-    "Data Structures and Algorithms",
-    "Database Principles",
-    "Guided Design in Software Engineering",
-    "Mobile Applications & Design",
-    "Operating Systems",
-  ];
+  // Cast the imported JSON to the ResumeData type
+  const data: ResumeData = resumeData as ResumeData;
 
   return (
     <Document>
       <Page size="LETTER" style={styles.page}>
         {/* Header Section */}
         <View style={styles.header}>
-          <Text style={styles.name}>David Joshua Reyes</Text>
+          <Text style={styles.name}>{data.personal.fullName}</Text>
           <View style={styles.titleRow}>
-            <Text style={styles.title}>Software Engineer</Text>
+            <Text style={styles.title}>{data.personal.title}</Text>
             <Text style={styles.location}>•</Text>
-            <Text style={styles.location}>New York City Metropolitan Area</Text>
+            <Text style={styles.location}>{data.personal.location}</Text>
           </View>
           <View style={styles.contactRow}>
-            <Text style={styles.contactText}>davidjoshuareyes@gmail.com</Text>
+            <Text style={styles.contactText}>
+              {data.personal.contactInfo.email}
+            </Text>
             <Text style={[styles.contactText, styles.contactSeparator]}>•</Text>
             <Link
-              src="https://linkedin.com/in/david-joshua-reyes-7aa50ab3"
+              src={data.personal.contactInfo.linkedin}
               style={styles.contactLink}
             >
               LinkedIn
             </Link>
             <Text style={[styles.contactText, styles.contactSeparator]}>•</Text>
             <Link
-              src="https://github.com/dajomareyes"
+              src={data.personal.contactInfo.github}
               style={styles.contactLink}
             >
               GitHub
@@ -204,69 +188,37 @@ const ResumePDF = () => {
             EXPERIENCE
           </Text>
 
-          {/* Vestwell */}
-          <View>
-            <Text style={styles.jobTitle}>Vestwell</Text>
-            <Text style={styles.companyInfo}>
-              Software Engineer | New York, NY
-            </Text>
-            <Text style={styles.dateInfo}>[Start Date] - Present</Text>
-            <View style={styles.bulletList}>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bullet}>•</Text>
-                <Text style={styles.bulletText}>
-                  [Responsibility/achievement - to be filled]
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bullet}>•</Text>
-                <Text style={styles.bulletText}>
-                  [Responsibility/achievement - to be filled]
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bullet}>•</Text>
-                <Text style={styles.bulletText}>
-                  [Responsibility/achievement - to be filled]
-                </Text>
+          {data.experience.map((job, index) => (
+            <View key={index}>
+              <Text style={styles.jobTitle}>{job.company}</Text>
+              <Text style={styles.companyInfo}>
+                {job.position} | {job.location}
+              </Text>
+              <Text style={styles.dateInfo}>
+                {job.startDate} - {job.endDate}
+              </Text>
+              <View style={styles.bulletList}>
+                {job.responsibilities.map((responsibility, respIndex) => (
+                  <View key={respIndex} style={styles.bulletItem}>
+                    <Text style={styles.bullet}>•</Text>
+                    <Text style={styles.bulletText}>{responsibility}</Text>
+                  </View>
+                ))}
               </View>
             </View>
-          </View>
-
-          {/* Previous Position Placeholder */}
-          <View>
-            <Text style={styles.jobTitle}>[Previous Company Name]</Text>
-            <Text style={styles.companyInfo}>[Job Title] | [Location]</Text>
-            <Text style={styles.dateInfo}>[Start Date] - [End Date]</Text>
-            <View style={styles.bulletList}>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bullet}>•</Text>
-                <Text style={styles.bulletText}>
-                  [Responsibility/achievement - to be filled]
-                </Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Text style={styles.bullet}>•</Text>
-                <Text style={styles.bulletText}>
-                  [Responsibility/achievement - to be filled]
-                </Text>
-              </View>
-            </View>
-          </View>
+          ))}
 
           {/* Education Section */}
           <Text style={styles.sectionTitle}>EDUCATION</Text>
           <View>
-            <Text style={styles.jobTitle}>
-              New Jersey Institute of Technology (NJIT)
+            <Text style={styles.jobTitle}>{data.education.institution}</Text>
+            <Text style={styles.companyInfo}>{data.education.degree}</Text>
+            <Text style={styles.dateInfo}>
+              {data.education.startYear} - {data.education.endYear}
             </Text>
-            <Text style={styles.companyInfo}>
-              Bachelor of Science in Computer Science
-            </Text>
-            <Text style={styles.dateInfo}>2013 - 2017</Text>
             <Text style={styles.courseworkLabel}>Relevant Coursework:</Text>
             <View style={styles.courseworkContainer}>
-              {coursework.map((course) => (
+              {data.education.coursework.map((course) => (
                 <Text key={course} style={styles.courseworkItem}>
                   • {course}
                 </Text>
@@ -277,7 +229,7 @@ const ResumePDF = () => {
           {/* Skills Section */}
           <Text style={styles.sectionTitle}>SKILLS</Text>
           <View style={styles.skillsContainer}>
-            {skills.map((skill) => (
+            {data.skills.map((skill) => (
               <Text key={skill} style={styles.skillChip}>
                 {skill}
               </Text>

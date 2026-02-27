@@ -1,0 +1,89 @@
+{
+  "personal": {
+    "firstName": "David",
+    "lastName": "Reyes",
+    "fullName": "David Joshua Reyes",
+    "title": "Software Engineer",
+    "location": "New York City Metropolitan Area",
+    "avatarPath": "src/assets/avatar-david.jpeg",
+    "contactInfo": {
+      "email": "davidjoshuareyes@gmail.com",
+      "linkedin": "https://linkedin.com/in/david-joshua-reyes-7aa50ab3",
+      "github": "https://github.com/dajomareyes"
+    }
+  },
+  "stats": {
+    "yearsOfExperience": "5+",
+    "contributions": "500+"
+  },
+  "skills": [
+    "TypeScript",
+    "JavaScript",
+    "React",
+    "Node.js",
+    "Python",
+    "Java",
+    "Git",
+    "Docker",
+    "AWS",
+    "PostgreSQL",
+    "MongoDB",
+    "REST APIs"
+  ],
+  "experience": [
+    {
+      "company": "Vestwell",
+      "position": "Software Engineer",
+      "location": "New York, NY",
+      "startDate": "[Start Date]",
+      "endDate": "Present",
+      "responsibilities": [
+        "[Responsibility/achievement - to be filled]",
+        "[Responsibility/achievement - to be filled]",
+        "[Responsibility/achievement - to be filled]"
+      ]
+    },
+    {
+      "company": "Integral Ad Science",
+      "position": "Senior Software Engineer",
+      "location": "New York, NY",
+      "startDate": "July 2018",
+      "endDate": "November 2021",
+      "responsibilities": [
+        "Developed and maintained client side measurement script (Javascript/ Typescript)",
+        "Worked in ETL framework using MapReduce, Spark, Hive and AWS to analyze",
+        "Developed and maintained Tomcat server using Java and Spring Boot",
+        "Contributed to the improvement of the continuous integration pipeline to help improve team velocity and feature delivery",
+        "Contributed to the implementation of proxy integrations with vendors and clients"
+      ]
+    },
+    {
+      "company": "Core eBusiness Solutions",
+      "position": "Full Stack Java Developer",
+      "location": "Fairfield",
+      "startDate": "May 2015",
+      "endDate": "July 2018",
+      "responsibilities": [
+        "Integrated Stamps.com API into desktop application to enhance client shipping efficiency (Java, AWT, SOAP)",
+        "Developed billing application to automate invoice generation from warehouse transactions (Java, AWT)",
+        "Implemented data synchronization system for seamless multi-client data integration (Java, Batch)",
+        "Designed and maintained ETL processes to load millions of records into databases (XPath, XML, XSLT, Java, SQL, Batch)",
+        "Led UI/UX redesign of mobile web application, increasing customer engagement (HTML, CSS, JavaScript)",
+        "Built BI dashboard with bookmarking system on Liferay platform for client data analysis (HTML, CSS, JavaScript, Spring MVC)"
+      ]
+    }
+  ],
+  "education": {
+    "institution": "New Jersey Institute of Technology (NJIT)",
+    "degree": "Bachelor of Science in Computer Science",
+    "startYear": 2013,
+    "endYear": 2017,
+    "coursework": [
+      "Data Structures and Algorithms",
+      "Database Principles",
+      "Guided Design in Software Engineering",
+      "Mobile Applications & Design",
+      "Operating Systems"
+    ]
+  }
+}
